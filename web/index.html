@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f4ef">
+  <title>Sort Lab | Sorting, made visible</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Sort Lab home">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span>sort<span class="brand-light">lab</span></span>
+      </a>
+      <span class="top-note"><span class="status-dot"></span> A little order, one step at a time</span>
+    </header>
+
+    <main>
+      <section class="intro" aria-labelledby="page-title">
+        <div class="intro-copy">
+          <p class="eyebrow">THE ALGORITHM PLAYGROUND</p>
+          <h1 id="page-title">Sorting, <span>made visible.</span></h1>
+          <p class="intro-text">Pick a method, press play, and watch a list find its place.</p>
+        </div>
+        <div class="intro-stamp" aria-hidden="true"><span>2 METHODS</span><span>1 LIST</span><span>ENDLESS “AHA”</span></div>
+      </section>
+
+      <section class="workspace" aria-label="Sorting visualizer">
+        <aside class="control-panel">
+          <div class="panel-heading">
+            <span class="section-index">01</span>
+            <div><h2>Set up a sort</h2><p>Choose a method and your numbers.</p></div>
+          </div>
+
+          <fieldset class="algorithm-picker">
+            <legend>Algorithm</legend>
+            <label class="algorithm-option">
+              <input type="radio" name="algorithm" value="quick" checked>
+              <span class="radio-mark"></span>
+              <span class="algorithm-name">Quick Sort<small>Divide around a pivot</small></span>
+              <span class="algorithm-complexity">avg O(n log n)</span>
+            </label>
+            <label class="algorithm-option">
+              <input type="radio" name="algorithm" value="merge">
+              <span class="radio-mark"></span>
+              <span class="algorithm-name">Merge Sort<small>Split, then combine</small></span>
+              <span class="algorithm-complexity">O(n log n)</span>
+            </label>
+          </fieldset>
+
+          <div class="input-heading"><label for="numbers-input">Your numbers</label><span id="number-count">8 / 80</span></div>
+          <textarea id="numbers-input" rows="3" spellcheck="false" aria-describedby="input-hint error-message">38, 12, 27, 5, 44, 19, 31, 8</textarea>
+          <p class="input-hint" id="input-hint">Comma-separated whole numbers, from 2 to 80.</p>
+          <p class="error-message" id="error-message" role="alert" hidden></p>
+
+          <div class="button-row">
+            <button class="button button-primary" id="start-button" type="button"><span class="play-icon" aria-hidden="true"></span>Start sorting</button>
+            <button class="button button-secondary" id="randomize-button" type="button"><span aria-hidden="true">↻</span> Randomize</button>
+          </div>
+          <button class="reset-button" id="reset-button" type="button"><span aria-hidden="true">⟲</span> Reset to original</button>
+
+          <div class="algorithm-note" aria-live="polite">
+            <span class="note-mark" aria-hidden="true">i</span>
+            <p id="algorithm-explanation">Quick Sort picks a pivot, groups smaller values to its left, then repeats on each side.</p>
+          </div>
+        </aside>
+
+        <section class="visual-panel" aria-label="Sort animation">
+          <div class="visual-header">
+            <div class="panel-heading">
+              <span class="section-index">02</span>
+              <div><h2>Watch it happen</h2><p id="step-label" aria-live="polite">Your list is ready when you are.</p></div>
+            </div>
+            <div class="sort-state"><span class="status-dot" id="state-dot"></span><span id="state-text">READY</span></div>
+          </div>
+
+          <div class="chart-wrap">
+            <div class="chart-axis" aria-hidden="true"><span>VALUE</span><span>0</span></div>
+            <div class="bar-chart" id="bar-chart" role="img" aria-label="Numbers displayed as vertical bars"></div>
+            <div class="chart-baseline" aria-hidden="true"></div>
+            <div class="chart-caption"><span><i class="legend-swatch legend-active"></i>Active range</span><span><i class="legend-swatch legend-rest"></i>Other values</span></div>
+          </div>
+
+          <div class="playback-row">
+            <button class="step-button" id="previous-step-button" type="button" disabled>← Previous</button>
+            <button class="icon-button" id="play-pause-button" type="button" aria-label="Play animation" title="Pause or resume animation" disabled><span id="play-pause-icon" aria-hidden="true">▶</span></button>
+            <input id="progress-slider" type="range" min="0" max="0" value="0" aria-label="Animation step">
+            <button class="step-button" id="next-step-button" type="button" disabled>Next →</button>
+            <label class="speed-control" for="speed-select"><span>Speed</span><select id="speed-select"><option value="900">Slow</option><option value="500" selected>Normal</option><option value="180">Fast</option></select></label>
+          </div>
+
+          <div class="step-guide" aria-live="polite" aria-atomic="true">
+            <span class="guide-kicker">STEP EXPLAINED</span>
+            <strong id="step-title">Ready to explore?</strong>
+            <p id="step-explanation">Start a sort to see each comparison, split, and placement explained as it happens.</p>
+            <ol class="procedure-list" id="step-procedure"></ol>
+          </div>
+
+          <div class="stats-row" aria-live="polite">
+            <div class="stat"><span class="stat-label">STEP</span><strong id="step-count">0 <span>/ 0</span></strong></div>
+            <div class="stat"><span class="stat-label">ELAPSED</span><strong id="elapsed-time">0.0<span> s</span></strong></div>
+            <div class="stat"><span class="stat-label">METHOD</span><strong id="method-name">Quick Sort</strong></div>
+            <div class="complete-mark" id="complete-mark" aria-hidden="true">✓</div>
+          </div>
+
+          <section class="result-panel" aria-labelledby="result-title" aria-live="polite">
+            <div class="result-heading">
+              <span class="result-mark" aria-hidden="true">↗</span>
+              <div><h3 id="result-title">Sorted result</h3><p id="result-message">Run the simulation to reveal the ordered sequence.</p></div>
+            </div>
+            <ol class="result-values" id="result-values" aria-label="Sorted numbers"></ol>
+          </section>
+        </section>
+      </section>
+
+      <section class="learning-panel" aria-labelledby="learning-title">
+        <div class="learning-heading">
+          <span class="section-index">03</span>
+          <div><h2 id="learning-title">Algorithm guide</h2><p id="learning-subtitle">Follow the procedure behind the animation.</p></div>
+        </div>
+        <div class="learning-grid">
+          <article class="learning-card">
+            <h3>Pseudocode</h3>
+            <pre class="pseudocode" id="pseudocode" aria-live="polite"></pre>
+          </article>
+          <article class="learning-card flow-card">
+            <h3>Flowchart</h3>
+            <div class="flowchart" id="flowchart" aria-live="polite" aria-label="Algorithm flowchart"></div>
+          </article>
+        </div>
+      </section>
+
+      <footer class="page-footer"><span>Small steps. Sorted list.</span><span>Built for curious minds <span aria-hidden="true">✳</span></span></footer>
+    </main>
+  </div>
+  <script src="/app.js" defer></script>
+</body>
+</html>
